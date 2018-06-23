@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">TodayNews</string>
+    <string name="title_home">主页</string>
+
+    <string name="tab_attention">主页</string>
+    <string name="tab_recommend">推荐</string>
+    <string name="tab_hotspot">热点</string>
+    <string name="tab_video">视频</string>
+    <string name="tab_World_Cup">世界杯</string>
+    <string name="tab_cate">美食</string>
+
+    <string name="title_video">视频</string>
+
+    <string name="tab_music">音乐</string>
+    <string name="tab_movie">影视</string>
+    <string name="tab_social">社会</string>
+    <string name="tab_game">游戏</string>
+    <string name="tab_popular">时尚</string>
+
+    <string name="title_smallnews">微头条</string>
+</resources>
