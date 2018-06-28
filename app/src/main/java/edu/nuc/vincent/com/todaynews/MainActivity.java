@@ -10,17 +10,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.SaveCallback;
 
-import java.io.BufferedReader;
-
-import edu.nuc.vincent.com.todaynews.fragments.HomeFragment;
-import edu.nuc.vincent.com.todaynews.fragments.SmallNewsFragment;
-import edu.nuc.vincent.com.todaynews.fragments.VideoFragment;
+import edu.nuc.vincent.com.todaynews.module.home.HomeFragment;
+import edu.nuc.vincent.com.todaynews.module.smallnew.SmallNewsFragment;
+import edu.nuc.vincent.com.todaynews.module.video.VideoFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -105,4 +102,8 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

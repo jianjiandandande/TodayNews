@@ -26,42 +26,42 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/mainColor"
-                android:text="@string/tab_attention"/>
+                android:text="@string/tab_home_science"/>
             <TextView
                 android:id="@+id/home_tab_recommend"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_recommend"/>
+                android:text="@string/tab_home_game"/>
             <TextView
                 android:id="@+id/home_tab_hotspot"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_hotspot"/>
+                android:text="@string/tab_home_movie"/>
             <TextView
                 android:id="@+id/home_tab_video"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_video"/>
+                android:text="@string/tab_home_history"/>
             <TextView
                 android:id="@+id/home_tab_World_Cup"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_World_Cup"/>
+                android:text="@string/tab_home_sports"/>
             <TextView
                 android:id="@+id/home_tab_cate"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_cate"/>
+                android:text="@string/tab_home_cate"/>
         </LinearLayout>
 
         <ImageView

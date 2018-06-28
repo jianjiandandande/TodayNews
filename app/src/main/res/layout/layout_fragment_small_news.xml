@@ -7,7 +7,7 @@
 
     <include layout="@layout/layout_title_small" />
 
-    <com.cjj.MaterialRefreshLayout
+    <com.goach.refreshlayout.widget.PullRefreshLayout
         android:id="@+id/small_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,8 +15,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/small_recycleView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
 
-    </com.cjj.MaterialRefreshLayout>
+    </com.goach.refreshlayout.widget.PullRefreshLayout>
 
 </LinearLayout>

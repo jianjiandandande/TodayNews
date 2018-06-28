@@ -1,22 +1,27 @@
-package edu.nuc.vincent.com.todaynews.fragments;
+package edu.nuc.vincent.com.todaynews.module.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
+import edu.nuc.vincent.com.todaynews.MineActivity;
 import edu.nuc.vincent.com.todaynews.R;
+import edu.nuc.vincent.com.todaynews.SearchActivity;
 import edu.nuc.vincent.com.todaynews.adapter.MyFragmentAdapter;
 
 /**
@@ -25,29 +30,41 @@ import edu.nuc.vincent.com.todaynews.adapter.MyFragmentAdapter;
 
 public class HomeFragment extends Fragment {
 
+    @InjectView(R.id.user_icon)
+    CircleImageView userIcon;
+    @InjectView(R.id.home_search)
+    TextView homeSearch;
+    @InjectView(R.id.send_news)
+    ImageView sendNews;
+    @InjectView(R.id.home_more_option)
+    ImageView homeMoreOption;
     private ViewPager mViewPager;
 
     private List<Fragment> mFragments;
 
-    private TextView mAttention,mRecommend,mHotspot,mVideo,mWorldCup,mCate;
+    private TextView mAttention, mRecommend, mHotspot, mVideo, mWorldCup, mCate;
 
-    private List<TextView> mTabs ;
+    private List<TextView> mTabs;
+
+    private String[] mTabname = {"news_tech", "news_game", "movie", "news_history", "news_sports", "news_food"};
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.layout_fragment_home,container,false);
+        View view = inflater.inflate(R.layout.layout_fragment_home, container, false);
 
         initTextView(view);
 
         initViewPager(view);
 
+        ButterKnife.inject(this, view);
         return view;
     }
 
     /**
      * 初始化ViewPager
+     *
      * @param view
      */
     private void initViewPager(View view) {
@@ -56,12 +73,11 @@ public class HomeFragment extends Fragment {
         mFragments = new ArrayList<>();
         for (int i = 0; i < mTabs.size(); i++) {
 
-            Fragment fragment = HomeTabFragment.newInstance(mTabs.get(i).getText().toString());
+            Fragment fragment = HomeTabFragment.newInstance(mTabname[i]);
 
             mFragments.add(fragment);
 
         }
-
         mViewPager.setAdapter(new MyFragmentAdapter(getChildFragmentManager(), mFragments));
         mViewPager.setCurrentItem(0);
         mViewPager.setOnPageChangeListener(new myOnPageChangeListener());
@@ -70,10 +86,10 @@ public class HomeFragment extends Fragment {
 
     /**
      * 初始化TextView
+     *
      * @param view
      */
     private void initTextView(View view) {
-
 
 
         mAttention = (TextView) view.findViewById(R.id.home_tab_attention);
@@ -98,6 +114,32 @@ public class HomeFragment extends Fragment {
         mWorldCup.setOnClickListener(new TextListener(4));
         mCate.setOnClickListener(new TextListener(5));
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
+
+    @OnClick({R.id.user_icon, R.id.home_search, R.id.send_news, R.id.home_more_option})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.user_icon:
+                Intent intent = new Intent(getContext(), MineActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.home_search:
+
+                homeSearch.setFocusable(false);;
+                startActivity(new Intent(getContext(), SearchActivity.class));
+                break;
+            case R.id.send_news:
+
+                break;
+            case R.id.home_more_option:
+                break;
+        }
     }
 
 
@@ -148,7 +190,6 @@ public class HomeFragment extends Fragment {
         mCate.setTextColor(Color.BLACK);
 
     }
-
 
 
 }

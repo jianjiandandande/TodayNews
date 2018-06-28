@@ -27,7 +27,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/mainColor"
-                android:text="@string/tab_recommend"/>
+                android:text="@string/tab_home_movie"/>
             <TextView
                 android:id="@+id/video_tab_music"
                 android:layout_width="0dp"
@@ -62,7 +62,7 @@
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_cate"/>
+                android:text="@string/tab_home_movie"/>
 
             <TextView
                 android:id="@+id/video_tab_popular"

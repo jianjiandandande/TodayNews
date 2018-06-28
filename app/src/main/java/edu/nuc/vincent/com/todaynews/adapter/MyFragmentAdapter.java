@@ -3,6 +3,8 @@ package edu.nuc.vincent.com.todaynews.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -20,6 +22,11 @@ public class MyFragmentAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        return super.instantiateItem(container, position);
+    }
+
+    @Override
     public Fragment getItem(int position) {
         return mFragments.get(position);
     }
@@ -28,4 +35,16 @@ public class MyFragmentAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return mFragments.size();
     }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        super.destroyItem(container, position, object);
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
+
+
 }

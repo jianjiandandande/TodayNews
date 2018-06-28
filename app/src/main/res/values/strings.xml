@@ -2,12 +2,12 @@
     <string name="app_name">TodayNews</string>
     <string name="title_home">主页</string>
 
-    <string name="tab_attention">主页</string>
-    <string name="tab_recommend">推荐</string>
-    <string name="tab_hotspot">热点</string>
-    <string name="tab_video">视频</string>
-    <string name="tab_World_Cup">世界杯</string>
-    <string name="tab_cate">美食</string>
+    <string name="tab_home_movie">电影</string>
+    <string name="tab_home_history">历史</string>
+    <string name="tab_home_science">科技</string>
+    <string name="tab_home_game">游戏</string>
+    <string name="tab_home_sports">体育</string>
+    <string name="tab_home_cate">美食</string>
 
     <string name="title_video">视频</string>
 

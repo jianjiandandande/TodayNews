@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.cjj.MaterialRefreshLayout
+    <com.goach.refreshlayout.widget.PullRefreshLayout
         android:id="@+id/video_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,6 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
-    </com.cjj.MaterialRefreshLayout>
+    </com.goach.refreshlayout.widget.PullRefreshLayout>
 
 </LinearLayout>

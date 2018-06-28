@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_alignParentBottom="true"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditText
+        android:id="@+id/video_comment_edit"
+        android:layout_toRightOf="@+id/user_icon"
+        android:layout_marginLeft="20dp"
+        android:layout_width="250dp"
+        android:layout_height="35dp"
+        android:paddingLeft="5dp"
+        android:drawableLeft="@drawable/ic_write_comment"
+        android:drawablePadding="10dp"
+        android:background="@drawable/oval_border"
+        android:hint="写评论"/>
+
+    <ImageView
+        android:id="@+id/video_do_like"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/ic_do_like"/>
+
+    <ImageView
+        android:id="@+id/video_transmit_to_other"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/ic_share"/>
+
+</LinearLayout>
