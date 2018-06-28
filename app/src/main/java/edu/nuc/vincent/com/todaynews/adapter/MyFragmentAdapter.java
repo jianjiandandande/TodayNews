@@ -1,5 +1,6 @@
 package edu.nuc.vincent.com.todaynews.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -43,8 +44,16 @@ public class MyFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public void notifyDataSetChanged() {
+
         super.notifyDataSetChanged();
     }
 
 
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+
+        return super.getItemPosition(object);
+
+
+    }
 }

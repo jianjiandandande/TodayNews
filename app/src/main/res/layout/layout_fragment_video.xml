@@ -27,42 +27,42 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/mainColor"
-                android:text="@string/tab_home_movie"/>
+                android:text="@string/tab_video_hot"/>
             <TextView
                 android:id="@+id/video_tab_music"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_music"/>
+                android:text="@string/tab_video_game"/>
             <TextView
                 android:id="@+id/video_tab_movie"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_movie"/>
+                android:text="@string/tab_video_handwork"/>
             <TextView
                 android:id="@+id/video_tab_social"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_social"/>
+                android:text="@string/tab_video_funny"/>
             <TextView
                 android:id="@+id/video_tab_game"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_game"/>
+                android:text="@string/tab_video_cate"/>
             <TextView
                 android:id="@+id/video_tab_cate"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_home_movie"/>
+                android:text="@string/tab_video_music"/>
 
             <TextView
                 android:id="@+id/video_tab_popular"
@@ -70,7 +70,7 @@
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tab_popular"/>
+                android:text="@string/tab_video_pet"/>
 
 
         </LinearLayout>

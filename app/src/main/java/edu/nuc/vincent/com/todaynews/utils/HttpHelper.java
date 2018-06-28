@@ -7,6 +7,4 @@ package edu.nuc.vincent.com.todaynews.utils;
 public class HttpHelper {
 
 
-
-
 }

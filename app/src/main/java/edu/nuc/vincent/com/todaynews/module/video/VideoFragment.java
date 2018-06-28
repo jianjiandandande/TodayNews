@@ -60,6 +60,9 @@ public class VideoFragment extends Fragment {
 
     private List<TextView> mTabs;
 
+    //热门、游戏、手工、搞笑、美食、音乐、宠物
+    private String[] mTabname = {"1", "480", "450", "13", "59", "62","6"};
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,7 +88,7 @@ public class VideoFragment extends Fragment {
         mFragments = new ArrayList<>();
         for (int i = 0; i < mTabs.size(); i++) {
 
-            Fragment fragment = VideoTabFragment.newInstance(mTabs.get(i).getText().toString());
+            Fragment fragment = VideoTabFragment.newInstance(mTabname[i]);
 
             mFragments.add(fragment);
 

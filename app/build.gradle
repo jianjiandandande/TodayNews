@@ -22,19 +22,17 @@ android {
         }
     }
 
-    //为了解决部分第三方库重复打包了META-INF的问题
     packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/rxjava.properties'
+        // ... and any other excludes go here
     }
-    lintOptions {
-        abortOnError false
-    }
+
+
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
@@ -48,21 +46,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
 
-    // LeanCloud 基础包
-    implementation 'cn.leancloud.android:avoscloud-sdk:v4.6.4'
-    // 推送与实时聊天需要的包
-    implementation('cn.leancloud.android:avoscloud-push:v4.6.4@aar') { transitive = true }
-    // LeanCloud 统计包
-    implementation 'cn.leancloud.android:avoscloud-statistics:v4.6.4'
-    // LeanCloud 用户反馈包
-    implementation 'cn.leancloud.android:avoscloud-feedback:v4.6.4@aar'
-    // avoscloud-sns：LeanCloud 第三方登录包
-    implementation 'cn.leancloud.android:avoscloud-sns:v4.6.4@aar'
-    implementation 'cn.leancloud.android:qq-sdk:1.6.1-leancloud'
-    // LeanCloud 应用内搜索包
-    implementation 'cn.leancloud.android:avoscloud-search:v4.6.4@aar'
     //videoPlayer
-    implementation 'cn.jzvd:jiaozivideoplayer:6.2.10'
+    compile 'com.shuyu:GSYVideoPlayer:5.0.0-beta'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     //下拉刷新、上拉加载
     compile 'com.github.Goach.Refresh-master:refreshlayout:1.0.0'
@@ -70,4 +55,6 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     //butterknife
     implementation 'com.jakewharton:butterknife:6.1.0'
+
+
 }

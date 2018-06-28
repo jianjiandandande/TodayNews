@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <cn.jzvd.JZVideoPlayerStandard
+        <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
             android:id="@+id/video_item_player"
             android:layout_width="match_parent"
             android:layout_height="190dp" />
@@ -55,7 +55,7 @@
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/video_play_count"
+                android:id="@+id/video_item_play_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

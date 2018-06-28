@@ -275,13 +275,16 @@ public class HomeActivity extends AppCompatActivity {
 
                     Comment comment = response.body();
 
-                    for (int i = 0; i < COMMENT_LENGTH; i++) {
+                    if (comment.getData()!=null) {
 
-                        if (i<comment.getData().size()) {
+                        for (int i = 0; i < COMMENT_LENGTH; i++) {
 
-                            mComments.add(comment.getData().get(i));
+                            if (i < comment.getData().size()) {
+
+                                mComments.add(comment.getData().get(i));
+                            }
+
                         }
-
                     }
 
                     if (mComments.size()>0){

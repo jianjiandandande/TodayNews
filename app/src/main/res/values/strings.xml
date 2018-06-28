@@ -11,11 +11,15 @@
 
     <string name="title_video">视频</string>
 
-    <string name="tab_music">音乐</string>
-    <string name="tab_movie">影视</string>
-    <string name="tab_social">社会</string>
-    <string name="tab_game">游戏</string>
-    <string name="tab_popular">时尚</string>
+
+    <string name="tab_video_hot">热门</string>
+    <string name="tab_video_game">游戏</string>
+    <string name="tab_video_handwork">手工</string>
+    <string name="tab_video_funny">搞笑</string>
+    <string name="tab_video_cate">美食</string>
+    <string name="tab_video_music">音乐</string>
+    <string name="tab_video_pet">宠物</string>
+    <string name="tab_video_celebrity">明星</string>
 
     <string name="title_smallnews">微头条</string>
 </resources>

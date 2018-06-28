@@ -59,6 +59,9 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
 
     private GetDatas mGetDatas;
 
+    private boolean isInitDataed;
+    private boolean isInitUIed;
+
 
     public static HomeTabFragment newInstance(String key) {
 
@@ -72,6 +75,16 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint()) {
+            if (!isInitDataed && isInitUIed) {
+                loadData();
+            }
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,10 +95,13 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
 
         if(mDatas==null||mDatas.size()==0) {
             mDatas = new ArrayList<>();
-            loadData();
+
             L.d(mKey);
         }
 
+        if (!isInitDataed && getUserVisibleHint()) {
+            loadData();
+        }
 
         return mView;
     }
@@ -103,7 +119,6 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
             @Override
             public void onTTRefresh() {
                 loadData();
-                mRefresh.endRefresh();
             }
         });
 
@@ -116,6 +131,7 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
         mRecycleView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         mRecycleView.setLayoutManager(layoutManager);
 
+        isInitUIed = true;
 
         if (mDatas != null && mDatas.size() > 0) {
             initAdapter();
@@ -164,6 +180,8 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
 
     public void loadData() {
 
+        isInitDataed = true;
+
         mGetDatas = mRetrofit.create(GetDatas.class);
         L.d(mKey + "loadDatas");
         Map<String, String> map = new HashMap<>();
@@ -190,6 +208,7 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
                         mDatas = news.getData();
 
                         Log.d(TAG, "loadDatas: loaddata is not null and size is " + mDatas.size() + mKey);
+                        mRefresh.endRefresh();
                         initAdapter();
                     }
 

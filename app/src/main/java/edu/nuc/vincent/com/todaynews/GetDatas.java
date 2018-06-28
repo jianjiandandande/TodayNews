@@ -32,8 +32,14 @@ public interface GetDatas {
     @GET("profile/toutiao")
     Call<User> getUserInfo(@QueryMap Map<String, String> params);
 
+    @GET("profile/meipai")
+    Call<User> getVideoUserInfo(@QueryMap Map<String, String> params);
+
     @GET("comment/toutiao")
     Call<Comment> getComments(@QueryMap Map<String, String> params);
+
+    @GET("comment/meipai")
+    Call<Comment> getVideoComments(@QueryMap Map<String, String> params);
 
     @GET("video/meipai")
     Call<Video> getVideos(@QueryMap Map<String, String> params);

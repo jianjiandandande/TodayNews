@@ -31,6 +31,7 @@ import edu.nuc.vincent.com.todaynews.bean.Video;
 import edu.nuc.vincent.com.todaynews.bean.VideoItem;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
 import edu.nuc.vincent.com.todaynews.utils.ImageUtil;
+import edu.nuc.vincent.com.todaynews.utils.L;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,6 +56,9 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
 
     private GetDatas mGetDatas;
 
+    private boolean isInitDataed;
+    private boolean isInitUIed;
+
     public static VideoTabFragment newInstance(String key) {
 
         VideoTabFragment homeTabFragment = new VideoTabFragment();
@@ -66,6 +70,16 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint()) {
+            if (!isInitDataed && isInitUIed) {
+                loadDatas();
+            }
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,7 +89,16 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
 
 
         initView(view);
-        loadDatas();
+
+        if(mDatas==null||mDatas.size()==0) {
+            mDatas = new ArrayList<>();
+
+            L.d(mKey);
+        }
+
+        if (!isInitDataed && getUserVisibleHint()) {
+            loadDatas();
+        }
         return view;
     }
 
@@ -94,6 +117,8 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
             @Override
             public void onTTRefresh() {
 
+                loadDatas();
+
             }
         });
 
@@ -102,6 +127,8 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL,false);
         mRecycleView.setLayoutManager(layoutManager);
+
+        isInitUIed = true;
 
         if (mDatas!=null&&mDatas.size()>0) {
 
@@ -123,11 +150,12 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
      */
     private void loadDatas() {
 
+
+        isInitDataed = true;
         Map<String,String> map = new HashMap<>();
         map.put("pageToken", "1");
-        map.put("catid", "480");
+        map.put("catid", mKey);
         map.put("apikey", Constant.APIKEY);
-        mDatas = new ArrayList<>();
         mGetDatas.getVideos(map).enqueue(new Callback<Video>() {
             @Override
             public void onResponse(Call<Video> call, Response<Video> response) {
@@ -144,6 +172,7 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
                         mDatas = video.getData();
 
 
+                        mRefresh.endRefresh();
                         initAdapter();
                     }
 
@@ -186,9 +215,11 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
 
         Video.DataBean item = mDatas.get(position);
         Intent intent = new Intent(getContext(), VideoActivity.class);
-        intent.putExtra("video_uri",item.getUrl());
+        intent.putExtra("video_uri",item.getVideoUrls().get(0));
         intent.putExtra("title",item.getTitle());
         intent.putExtra("love_count",String.valueOf(item.getLikeCount()));
+        intent.putExtra("uid",item.getPosterId());
+        intent.putExtra("id",item.getId());
         startActivity(intent);
 
     }
