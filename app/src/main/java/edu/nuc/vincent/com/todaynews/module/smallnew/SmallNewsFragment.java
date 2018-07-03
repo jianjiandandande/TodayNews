@@ -8,13 +8,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.goach.refreshlayout.widget.PullRefreshLayout;
+import com.lieweisi.loadinglib.LoadingDialog;
+import com.lieweisi.loadinglib.LoadingUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +26,8 @@ import edu.nuc.vincent.com.todaynews.GetDatas;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.adapter.EssayAdapter;
 import edu.nuc.vincent.com.todaynews.base.BaseAdapter;
-import edu.nuc.vincent.com.todaynews.bean.Essay;
+import edu.nuc.vincent.com.todaynews.entity.Essay;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
-import edu.nuc.vincent.com.todaynews.utils.L;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,6 +53,8 @@ public class SmallNewsFragment extends Fragment implements BaseAdapter.OnItemCli
     private PullRefreshLayout mRefresh;
 
     private String uid = "4492956276_4492956276";
+
+    private LoadingDialog mDialog;
 
     @Nullable
     @Override
@@ -121,6 +123,8 @@ public class SmallNewsFragment extends Fragment implements BaseAdapter.OnItemCli
      */
     private void loadDatas() {
 
+        mDialog = LoadingUtil.show(mDialog,getContext(),LoadingUtil.TYPE_1);
+        mDialog.setCancelable(false);
 
         mGetDatas = mRetrofit.create(GetDatas.class);
 
@@ -148,6 +152,7 @@ public class SmallNewsFragment extends Fragment implements BaseAdapter.OnItemCli
                                 mDatas = essay.getData();
 
                                 initAdapter();
+                                mDialog.dismiss();
                             }
 
                         } else {

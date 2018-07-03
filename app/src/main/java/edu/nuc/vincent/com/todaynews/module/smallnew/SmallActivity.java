@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,10 +33,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import edu.nuc.vincent.com.todaynews.GetDatas;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.adapter.CommentAdapter;
-import edu.nuc.vincent.com.todaynews.bean.Comment;
-import edu.nuc.vincent.com.todaynews.bean.User;
+import edu.nuc.vincent.com.todaynews.entity.Comment;
+import edu.nuc.vincent.com.todaynews.entity.User;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
-import edu.nuc.vincent.com.todaynews.utils.L;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,7 +77,7 @@ public class SmallActivity extends AppCompatActivity {
     @InjectView(R.id.video_comment_edit)
     EditText videoCommentEdit;
     @InjectView(R.id.video_do_like)
-    ImageView videoDoLike;
+    LikeButton videoDoLike;
     @InjectView(R.id.video_transmit_to_other)
     ImageView videoTransmitToOther;
     @InjectView(R.id.small_hint)
@@ -107,6 +108,18 @@ public class SmallActivity extends AppCompatActivity {
         ButterKnife.inject(this);
 
         videoCommentEdit.setInputType(InputType.TYPE_NULL);
+
+        videoDoLike.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+
+            }
+        });
 
         getIntentData();
 

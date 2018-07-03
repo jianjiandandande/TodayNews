@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lieweisi.loadinglib.LoadingDialog;
+import com.lieweisi.loadinglib.LoadingUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +27,8 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import edu.nuc.vincent.com.todaynews.adapter.SearchAdapter;
 import edu.nuc.vincent.com.todaynews.base.BaseAdapter;
-import edu.nuc.vincent.com.todaynews.bean.Search;
-import edu.nuc.vincent.com.todaynews.module.home.HomeActivity;
+import edu.nuc.vincent.com.todaynews.entity.Search;
+import edu.nuc.vincent.com.todaynews.module.news.NewsActivity;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,6 +54,8 @@ public class SearchActivity extends AppCompatActivity implements BaseAdapter.OnI
 
     private Retrofit mRetrofit;
     private GetDatas mGetDatas;
+
+    private LoadingDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,9 @@ public class SearchActivity extends AppCompatActivity implements BaseAdapter.OnI
      * 查询数据
      */
     private void searchData() {
+
+        mDialog = LoadingUtil.show(mDialog,this,LoadingUtil.TYPE_1);
+        mDialog.setCancelable(false);//按返回键取消
         mRetrofit = new Retrofit.Builder()
                 .baseUrl("http://120.76.205.241:8000/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -124,6 +132,7 @@ public class SearchActivity extends AppCompatActivity implements BaseAdapter.OnI
 
 
                                 initAdapter();
+                                mDialog.dismiss();
                             }
 
 
@@ -162,7 +171,7 @@ public class SearchActivity extends AppCompatActivity implements BaseAdapter.OnI
     @Override
     public void onClick(View view, int position) {
         Search.DataBean bean = mDatas.get(position);
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, NewsActivity.class);
         intent.putExtra("title", bean.getTitle());
         intent.putExtra("date", String.valueOf(bean.getPublishDateStr()));
         intent.putExtra("content", bean.getContent());

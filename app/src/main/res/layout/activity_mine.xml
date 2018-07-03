@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="edu.nuc.vincent.com.todaynews.MineActivity">
+    tools:context="edu.nuc.vincent.com.todaynews.module.mine.MineActivity">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -30,6 +30,7 @@
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/mine_icon"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginLeft="20dp"
@@ -43,6 +44,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/mine_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Vincent"

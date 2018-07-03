@@ -1,17 +1,18 @@
 package edu.nuc.vincent.com.todaynews;
 
-import java.util.List;
 import java.util.Map;
 
-import edu.nuc.vincent.com.todaynews.bean.Comment;
-import edu.nuc.vincent.com.todaynews.bean.Essay;
-import edu.nuc.vincent.com.todaynews.bean.News;
-import edu.nuc.vincent.com.todaynews.bean.Search;
-import edu.nuc.vincent.com.todaynews.bean.User;
-import edu.nuc.vincent.com.todaynews.bean.Video;
-import okhttp3.ResponseBody;
+import edu.nuc.vincent.com.todaynews.entity.Comment;
+import edu.nuc.vincent.com.todaynews.entity.Essay;
+import edu.nuc.vincent.com.todaynews.entity.News;
+import edu.nuc.vincent.com.todaynews.entity.Result;
+import edu.nuc.vincent.com.todaynews.entity.Search;
+import edu.nuc.vincent.com.todaynews.entity.User;
+import edu.nuc.vincent.com.todaynews.entity.UserInfo;
+import edu.nuc.vincent.com.todaynews.entity.Video;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
 /**
@@ -43,5 +44,14 @@ public interface GetDatas {
 
     @GET("video/meipai")
     Call<Video> getVideos(@QueryMap Map<String, String> params);
+
+    @POST("login")
+    Call<Result> checkLogin(@QueryMap Map<String,String> params);
+
+    @POST("register")
+    Call<Result> checkRegister(@QueryMap Map<String,String> params);
+
+    @GET("userInfo")
+    Call<UserInfo> getUserInfoFromWeb(@QueryMap Map<String,String> params);
 
 }

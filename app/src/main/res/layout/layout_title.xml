@@ -4,7 +4,7 @@
     android:layout_height="?attr/actionBarSize"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:background="@color/azure">
+    android:background="@color/colorPrimary">
 
     <ImageView
         android:id="@+id/btn_back"

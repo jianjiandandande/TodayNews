@@ -1,4 +1,4 @@
-package edu.nuc.vincent.com.todaynews.module.home;
+package edu.nuc.vincent.com.todaynews.module.news;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +31,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import edu.nuc.vincent.com.todaynews.GetDatas;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.adapter.CommentAdapter;
-import edu.nuc.vincent.com.todaynews.bean.Comment;
-import edu.nuc.vincent.com.todaynews.bean.User;
+import edu.nuc.vincent.com.todaynews.entity.Comment;
+import edu.nuc.vincent.com.todaynews.entity.User;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +40,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomeActivity extends AppCompatActivity {
+public class NewsActivity extends AppCompatActivity {
 
     @InjectView(R.id.btn_back)
     ImageView btnBack;
@@ -71,7 +73,7 @@ public class HomeActivity extends AppCompatActivity {
     @InjectView(R.id.video_comment_edit)
     EditText videoCommentEdit;
     @InjectView(R.id.video_do_like)
-    ImageView videoDoLike;
+    LikeButton videoDoLike;
     @InjectView(R.id.video_transmit_to_other)
     ImageView videoTransmitToOther;
     @InjectView(R.id.home_user_icon)
@@ -132,6 +134,18 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.inject(this);
+
+        videoDoLike.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+
+            }
+        });
 
         getIntentData();
 
@@ -242,7 +256,7 @@ public class HomeActivity extends AppCompatActivity {
                     User.DataBean bean = (User.DataBean) response.body().getData().get(0);
 
                     homeUsername.setText(bean.getScreenName());
-                    Glide.with(HomeActivity.this).load(bean.getAvatarUrl()).into(homeUserIcon);
+                    Glide.with(NewsActivity.this).load(bean.getAvatarUrl()).into(homeUserIcon);
 
                 }
 

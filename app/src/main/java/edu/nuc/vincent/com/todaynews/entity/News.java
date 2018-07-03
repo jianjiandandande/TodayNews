@@ -1,4 +1,4 @@
-package edu.nuc.vincent.com.todaynews.bean;
+package edu.nuc.vincent.com.todaynews.entity;
 
 
 import java.util.List;

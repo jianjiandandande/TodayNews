@@ -11,21 +11,22 @@ import java.util.List;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.base.BaseViewHolder;
 import edu.nuc.vincent.com.todaynews.base.SimpleAdapter;
+import edu.nuc.vincent.com.todaynews.entity.HistoryItem;
 import edu.nuc.vincent.com.todaynews.entity.Search;
 
 /**
  * Created by Vincent on 2018/6/27.
  */
 
-public class SearchAdapter extends SimpleAdapter<Search.DataBean> {
+public class HistoryAdapter extends SimpleAdapter<HistoryItem> {
     private Context mContext;
-    public SearchAdapter(Context context, List<Search.DataBean> datas, int layoutResId) {
+    public HistoryAdapter(Context context, List<HistoryItem> datas, int layoutResId) {
         super(context, datas, layoutResId);
         mContext = context;
     }
 
     @Override
-    public void bindData(BaseViewHolder viewHolder, Search.DataBean dataBean) {
+    public void bindData(BaseViewHolder viewHolder, HistoryItem dataBean) {
 
 
         if (dataBean.getContent().length()>30) {
@@ -35,9 +36,9 @@ public class SearchAdapter extends SimpleAdapter<Search.DataBean> {
         ImageView imageView = viewHolder.getImageView(R.id.search_image);
         Uri imageUri = null;
 
-        if (dataBean.getImageUrls()!=null) {
+        if (dataBean.getImageUrl()!=null) {
 
-            imageUri = Uri.parse(dataBean.getImageUrls().get(0));
+            imageUri = Uri.parse(dataBean.getImageUrl());
         }else {
             imageUri = Uri.parse("https://p3.pstatp.com/large/pgc-image/15275844527347c09907875");
         }

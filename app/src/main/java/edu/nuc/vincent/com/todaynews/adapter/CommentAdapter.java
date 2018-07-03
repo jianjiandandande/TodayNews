@@ -7,7 +7,7 @@ import java.util.List;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.base.BaseViewHolder;
 import edu.nuc.vincent.com.todaynews.base.SimpleAdapter;
-import edu.nuc.vincent.com.todaynews.bean.Comment;
+import edu.nuc.vincent.com.todaynews.entity.Comment;
 
 /**
  * Created by Vincent on 2018/6/27.

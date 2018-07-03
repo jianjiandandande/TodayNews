@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="edu.nuc.vincent.com.todaynews.module.mine.SettingActivity">
+
+    <include layout="@layout/layout_title"/>
+
+    <RelativeLayout
+        android:id="@+id/updating"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/normal_border"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_marginTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="版本更新" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_right_black_24dp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/log_off"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/normal_border"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_marginTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="退出登录" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_right_black_24dp" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

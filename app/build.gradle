@@ -56,5 +56,16 @@ dependencies {
     //butterknife
     implementation 'com.jakewharton:butterknife:6.1.0'
 
+    //EditText
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
 
+    //加载Dialog
+    compile 'com.github.blackchopper:dynamicdialog:v1.0.5'
+    compile 'com.github.lieweisi:loading:v0.1'
+
+    //Toast
+    implementation 'com.github.GrenderG:Toasty:1.3.0'
+
+    //likebutton
+    compile 'com.github.jd-alexander:LikeButton:0.2.3'
 }

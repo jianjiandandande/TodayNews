@@ -1,4 +1,4 @@
-package edu.nuc.vincent.com.todaynews.module.home;
+package edu.nuc.vincent.com.todaynews.module.news;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 
 import com.goach.refreshlayout.widget.PullRefreshLayout;
+import com.lieweisi.loadinglib.LoadingDialog;
+import com.lieweisi.loadinglib.LoadingUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,10 +26,11 @@ import java.util.Map;
 
 import edu.nuc.vincent.com.todaynews.GetDatas;
 import edu.nuc.vincent.com.todaynews.R;
-import edu.nuc.vincent.com.todaynews.adapter.HomeAdapter;
+import edu.nuc.vincent.com.todaynews.adapter.NewsAdapter;
 import edu.nuc.vincent.com.todaynews.base.BaseAdapter;
-import edu.nuc.vincent.com.todaynews.bean.News;
+import edu.nuc.vincent.com.todaynews.entity.News;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
+import edu.nuc.vincent.com.todaynews.utils.HttpHelper;
 import edu.nuc.vincent.com.todaynews.utils.L;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,16 +42,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Vincent on 2018/6/20.
  */
 
-public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClickListener {
+public class NewsTabFragment extends Fragment implements BaseAdapter.OnItemClickListener {
 
-    private static final String TAG = "HomeTabFragment";
+    private static final String TAG = "NewsTabFragment";
     private RecyclerView mRecycleView;
-    private HomeAdapter mAdapter;
+    private NewsAdapter mAdapter;
     private List<News.DataBean> mDatas;
 
     private View mView;
-
-    private boolean isFirst = true;
 
     private PullRefreshLayout mRefresh;
 
@@ -62,16 +63,18 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
     private boolean isInitDataed;
     private boolean isInitUIed;
 
+    private LoadingDialog mDialog;
 
-    public static HomeTabFragment newInstance(String key) {
 
-        HomeTabFragment homeTabFragment = new HomeTabFragment();
+    public static NewsTabFragment newInstance(String key) {
+
+        NewsTabFragment newsTabFragment = new NewsTabFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString("key", key);
-        homeTabFragment.setArguments(bundle);
+        newsTabFragment.setArguments(bundle);
 
-        return homeTabFragment;
+        return newsTabFragment;
 
     }
 
@@ -147,7 +150,7 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
         Log.d(TAG, "initAdapter: ready to init adapter");
 
         Log.d(TAG, "initAdapter: adapter is null");
-        mAdapter = new HomeAdapter(getContext(), mDatas, R.layout.home_tab_item);
+        mAdapter = new NewsAdapter(getContext(), mDatas, R.layout.home_tab_item);
 
         Log.d(TAG, "initAdapter: adapter is not null");
 
@@ -166,10 +169,7 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
 
         L.d(mKey + "onCreate");
 
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl("http://api01.bitspaceman.com:8000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        mRetrofit = new HttpHelper.Builder().baseUrl(Constant.API_BASE_URL).build();
 
     }
 
@@ -181,7 +181,8 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
     public void loadData() {
 
         isInitDataed = true;
-
+        mDialog = LoadingUtil.show(mDialog,getContext(),LoadingUtil.TYPE_1);
+        mDialog.setCancelable(false);
         mGetDatas = mRetrofit.create(GetDatas.class);
         L.d(mKey + "loadDatas");
         Map<String, String> map = new HashMap<>();
@@ -210,6 +211,7 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
                         Log.d(TAG, "loadDatas: loaddata is not null and size is " + mDatas.size() + mKey);
                         mRefresh.endRefresh();
                         initAdapter();
+                        mDialog.dismiss();
                     }
 
 
@@ -234,7 +236,7 @@ public class HomeTabFragment extends Fragment implements BaseAdapter.OnItemClick
     public void onClick(View view, int position) {
 
         News.DataBean bean = mDatas.get(position);
-        Intent intent = new Intent(getContext(), HomeActivity.class);
+        Intent intent = new Intent(getContext(), NewsActivity.class);
         intent.putExtra("title", bean.getTitle());
         intent.putExtra("date", String.valueOf(bean.getPublishDateStr()));
         intent.putExtra("content", bean.getContent());

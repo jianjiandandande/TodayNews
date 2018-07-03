@@ -1,23 +1,21 @@
 package edu.nuc.vincent.com.todaynews.module.video;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.goach.refreshlayout.widget.PullRefreshLayout;
+import com.lieweisi.loadinglib.LoadingDialog;
+import com.lieweisi.loadinglib.LoadingUtil;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +24,8 @@ import edu.nuc.vincent.com.todaynews.GetDatas;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.adapter.VideoAdapter;
 import edu.nuc.vincent.com.todaynews.base.BaseAdapter;
-import edu.nuc.vincent.com.todaynews.bean.News;
-import edu.nuc.vincent.com.todaynews.bean.Video;
-import edu.nuc.vincent.com.todaynews.bean.VideoItem;
+import edu.nuc.vincent.com.todaynews.entity.Video;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
-import edu.nuc.vincent.com.todaynews.utils.ImageUtil;
 import edu.nuc.vincent.com.todaynews.utils.L;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,6 +53,8 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
 
     private boolean isInitDataed;
     private boolean isInitUIed;
+
+    private LoadingDialog mDialog;
 
     public static VideoTabFragment newInstance(String key) {
 
@@ -152,6 +149,11 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
 
 
         isInitDataed = true;
+
+        mDialog = LoadingUtil.show(mDialog,getContext(),LoadingUtil.TYPE_1);
+        mDialog.setCancelable(false);
+
+
         Map<String,String> map = new HashMap<>();
         map.put("pageToken", "1");
         map.put("catid", mKey);
@@ -174,6 +176,7 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
 
                         mRefresh.endRefresh();
                         initAdapter();
+                        mDialog.dismiss();
                     }
 
 

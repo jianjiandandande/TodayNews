@@ -1,6 +1,8 @@
-package edu.nuc.vincent.com.todaynews.module.home;
+package edu.nuc.vincent.com.todaynews.module.news;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,16 +23,17 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import edu.nuc.vincent.com.todaynews.MineActivity;
+import edu.nuc.vincent.com.todaynews.module.mine.MineActivity;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.SearchActivity;
 import edu.nuc.vincent.com.todaynews.adapter.MyFragmentAdapter;
+import edu.nuc.vincent.com.todaynews.utils.L;
 
 /**
  * Created by Vincent on 2018/6/20.
  */
 
-public class HomeFragment extends Fragment {
+public class NewsFragment extends Fragment {
 
     @InjectView(R.id.user_icon)
     CircleImageView userIcon;
@@ -53,12 +58,24 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.layout_fragment_home, container, false);
+        ButterKnife.inject(this, view);
+        SharedPreferences getData = getActivity().getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        boolean loginState = getData.getBoolean("loginState",false);
+
+        if (loginState==true){
+            String userIconUrl = getData.getString("user_icon","");
+
+            if (!userIconUrl.equals("")) {
+                L.d("icon_url = "+userIconUrl);
+                Glide.with(getContext()).load(userIconUrl).into(userIcon);
+            }
+        }
 
         initTextView(view);
 
         initViewPager(view);
 
-        ButterKnife.inject(this, view);
+
         return view;
     }
 
@@ -73,7 +90,7 @@ public class HomeFragment extends Fragment {
         mFragments = new ArrayList<>();
         for (int i = 0; i < mTabs.size(); i++) {
 
-            Fragment fragment = HomeTabFragment.newInstance(mTabname[i]);
+            Fragment fragment = NewsTabFragment.newInstance(mTabname[i]);
 
             mFragments.add(fragment);
 
@@ -90,7 +107,6 @@ public class HomeFragment extends Fragment {
      * @param view
      */
     private void initTextView(View view) {
-
 
         mAttention = (TextView) view.findViewById(R.id.home_tab_attention);
         mRecommend = (TextView) view.findViewById(R.id.home_tab_recommend);
@@ -190,6 +206,5 @@ public class HomeFragment extends Fragment {
         mCate.setTextColor(Color.BLACK);
 
     }
-
 
 }

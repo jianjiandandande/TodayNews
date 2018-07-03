@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <Button
+        android:id="@+id/btn_camera"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="拍照"
+        android:background="@drawable/dialog_item_state"
+        android:textColor="@android:color/black"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"/>
+
+    <Button
+        android:id="@+id/btn_picture"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="图库"
+        android:background="@drawable/dialog_item_state"
+        android:textColor="@android:color/black"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"/>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="取消"
+        android:background="@drawable/dialog_item_state"
+        android:textColor="@android:color/black"/>
+
+</LinearLayout>

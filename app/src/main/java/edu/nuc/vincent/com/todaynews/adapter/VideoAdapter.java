@@ -1,7 +1,6 @@
 package edu.nuc.vincent.com.todaynews.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,8 +13,7 @@ import java.util.List;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.base.BaseViewHolder;
 import edu.nuc.vincent.com.todaynews.base.SimpleAdapter;
-import edu.nuc.vincent.com.todaynews.bean.Video;
-import edu.nuc.vincent.com.todaynews.bean.VideoItem;
+import edu.nuc.vincent.com.todaynews.entity.Video;
 import edu.nuc.vincent.com.todaynews.utils.L;
 
 /**

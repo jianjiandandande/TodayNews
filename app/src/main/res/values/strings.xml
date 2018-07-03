@@ -22,4 +22,7 @@
     <string name="tab_video_celebrity">明星</string>
 
     <string name="title_smallnews">微头条</string>
+
+    <!--Login-->
+    <string name="login_title">登录你的头条，精彩永不丢失</string>
 </resources>

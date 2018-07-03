@@ -11,16 +11,16 @@ import java.util.List;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.base.BaseViewHolder;
 import edu.nuc.vincent.com.todaynews.base.SimpleAdapter;
-import edu.nuc.vincent.com.todaynews.bean.News;
+import edu.nuc.vincent.com.todaynews.entity.News;
 
 /**
  * Created by Vincent on 2018/6/21.
  */
 
-public class HomeAdapter extends SimpleAdapter<News.DataBean>{
+public class NewsAdapter extends SimpleAdapter<News.DataBean>{
 
     private Context mContext;
-    public HomeAdapter(Context context, List<News.DataBean> datas, int layoutResId) {
+    public NewsAdapter(Context context, List<News.DataBean> datas, int layoutResId) {
         super(context, datas, layoutResId);
         this.mContext = context;
     }
