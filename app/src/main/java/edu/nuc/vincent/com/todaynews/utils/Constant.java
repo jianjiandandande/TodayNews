@@ -24,13 +24,30 @@ public class Constant {
 
     public static final String REGISTER_SUCCESS_CODE = "501";
 
-    public static final String PASSWORD_FAILED_CODE = "400";
+    public static final String GET_USER_INFO_SUCCESS_CODE = "502";
 
-    public static final String USER_NOT_EXIST= "401";
+    public static final String ADD_HISTORY_SUCCESS_CODE = "503";
 
-    public static final String USER_HAS_EXIST = "402";
+    public static final String ADD_COLLECTION_SUCCESS_CODE = "504";
+
+    public static final String DELETE_COLLECTION_SUCCESS_CODE = "505";
+
+    public static final String DELETE_HISTORY_SUCCESS_CODE = "506";
+
+    public static final String USER_NOT_EXIST_CODE= "400";
+
+    public static final String PASSWORD_FAILED_CODE = "401";
+
+    public static final String USER_HAS_EXIST_CODE = "402";
+
+    public static final String GET_USER_INFO_FAILED_CODE = "403";
+
+    public static final String DELETE_COLLECTION_FAILED_CODE = "403";
+
+    public static final String DELETE_HISTORY_FAILED_CODE = "405";
 
     public static final int CAMERA_REQUEST_CODE = 100;
+
     public static final int IMAGE_REQUEST_CODE = 101;
 
 }

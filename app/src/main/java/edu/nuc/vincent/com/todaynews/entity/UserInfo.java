@@ -5,15 +5,47 @@ package edu.nuc.vincent.com.todaynews.entity;
  */
 
 public class UserInfo {
+
+
     /**
-     * user_icon : 122211
+     * msg : 获取用户信息成功
+     * code : 502
      * telephone : 15735657418
+     * user_icon : https://avatars2.githubusercontent.com/u/15951818?s=460&v=4
+     * userId : 1
      * username : vincent
      */
 
-    private String user_icon;
+    private String msg;
+    private int code;
     private String telephone;
+    private String user_icon;
+    private int userId;
     private String username;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
     public String getUser_icon() {
         return user_icon;
@@ -23,12 +55,12 @@ public class UserInfo {
         this.user_icon = user_icon;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

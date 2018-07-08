@@ -11,7 +11,7 @@ import edu.nuc.vincent.com.todaynews.R;
 
 
 /**
- * Created by lin on 2018/4/28.
+ * Created by Vincent on 2018/4/28.
  * 描述:自定义dialog
  */
 

@@ -247,6 +247,7 @@ public class NewsTabFragment extends Fragment implements BaseAdapter.OnItemClick
         intent.putExtra("set_love_count", String.valueOf(bean.getLikeCount()));
         intent.putExtra("uid", String.valueOf(bean.getPosterId()));
         intent.putExtra("id", bean.getId());
+        intent.putExtra("collection_state", false);
         startActivity(intent);
 
     }

@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import edu.nuc.vincent.com.todaynews.module.video.VideoFragment;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
 import edu.nuc.vincent.com.todaynews.utils.HttpHelper;
 import edu.nuc.vincent.com.todaynews.utils.L;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,34 +72,39 @@ public class MainActivity extends AppCompatActivity {
     private void getUserInfo() {
 
         final String username = getIntent().getStringExtra("username");
-        Map<String,String> map = new HashMap<>();
-        map.put("username",username);
+        if (username!=null) {
+            Map<String, String> map = new HashMap<>();
+            map.put("username", username);
 
-        mGetDatas.getUserInfoFromWeb(map).enqueue(new Callback<UserInfo>() {
-            @Override
-            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+            mGetDatas.getUserInfoFromWeb(map).enqueue(new Callback<UserInfo>() {
+                @Override
+                public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
 
-                if (response.isSuccessful()){
+                    if (response.isSuccessful()) {
 
-                    UserInfo userInfo = response.body();
+                        UserInfo userInfo = response.body();
 
-                    SharedPreferences.Editor editor = getSharedPreferences("userInfo",MODE_PRIVATE).edit();
-                    editor.putBoolean("loginState",true);
-                    editor.putString("username",userInfo.getUsername());
-                    editor.putString("user_icon",userInfo.getUser_icon());
-                    editor.putString("telephone",userInfo.getTelephone());
-                    editor.apply();
+                        SharedPreferences.Editor editor = getSharedPreferences("userInfo", MODE_PRIVATE).edit();
+                        editor.putBoolean("loginState", true);
+                        editor.putInt("userId", userInfo.getUserId());
+                        editor.putString("username", userInfo.getUsername());
+                        editor.putString("user_icon", userInfo.getUser_icon());
+                        editor.putString("telephone", userInfo.getTelephone());
+                        editor.apply();
 
+
+                    }
 
                 }
 
-            }
+                @Override
+                public void onFailure(Call<UserInfo> call, Throwable t) {
 
-            @Override
-            public void onFailure(Call<UserInfo> call, Throwable t) {
-
-            }
-        });
+                }
+            });
+        }else {
+            Toasty.error(this, "当前无用户登录", Toast.LENGTH_SHORT).show();
+        }
 
 
     }

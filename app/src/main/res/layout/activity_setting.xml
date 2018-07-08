@@ -9,6 +9,7 @@
 
     <include layout="@layout/layout_title"/>
 
+
     <RelativeLayout
         android:id="@+id/updating"
         android:layout_width="match_parent"
@@ -35,7 +36,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/log_off"
+        android:id="@+id/clear_buffer"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/normal_border"
@@ -46,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="退出登录" />
+            android:text="清除缓存" />
 
 
         <ImageView
@@ -58,5 +59,44 @@
 
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/normal_border"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_marginTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="广告设置" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_right_black_24dp" />
+
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:id="@+id/log_off"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_height="50dp"
+        android:text="退 出 登 录"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center">
+
+    </Button>
 
 </LinearLayout>

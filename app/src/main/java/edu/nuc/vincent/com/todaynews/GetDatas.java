@@ -1,9 +1,12 @@
 package edu.nuc.vincent.com.todaynews;
 
+import java.util.List;
 import java.util.Map;
 
+import edu.nuc.vincent.com.todaynews.entity.AttentionItem;
 import edu.nuc.vincent.com.todaynews.entity.Comment;
 import edu.nuc.vincent.com.todaynews.entity.Essay;
+import edu.nuc.vincent.com.todaynews.entity.HistoryItem;
 import edu.nuc.vincent.com.todaynews.entity.News;
 import edu.nuc.vincent.com.todaynews.entity.Result;
 import edu.nuc.vincent.com.todaynews.entity.Search;
@@ -53,5 +56,32 @@ public interface GetDatas {
 
     @GET("userInfo")
     Call<UserInfo> getUserInfoFromWeb(@QueryMap Map<String,String> params);
+
+    @GET("addHistory")
+    Call<Result> addHistoryToWeb(@QueryMap Map<String,String> params);
+
+    @GET("deleteHistory")
+    Call<Result> deleteHistory(@QueryMap Map<String,String> params);
+
+    @GET("queryHistory")
+    Call<List<HistoryItem>> queryHistory(@QueryMap Map<String,String> params);
+
+    @GET("addCollection")
+    Call<Result> addCollectionToWeb(@QueryMap Map<String,String> params);
+
+    @GET("deleteCollection")
+    Call<Result> deleteCollection(@QueryMap Map<String,String> params);
+
+    @GET("queryCollection")
+    Call<List<HistoryItem>> queryCollection(@QueryMap Map<String,String> params);
+
+    @GET("addAttention")
+    Call<Result> addAttentionToWeb(@QueryMap Map<String,String> params);
+
+    @GET("deleteAttention")
+    Call<Result> deleteAttention(@QueryMap Map<String,String> params);
+
+    @GET("queryAttention")
+    Call<List<AttentionItem>> queryAttention(@QueryMap Map<String,String> params);
 
 }

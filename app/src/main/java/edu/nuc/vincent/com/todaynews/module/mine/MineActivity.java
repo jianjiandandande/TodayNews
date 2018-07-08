@@ -103,6 +103,8 @@ public class MineActivity extends AppCompatActivity {
                 Glide.with(this).load(userIconUrl).into(mineIcon);
             }
         }else {
+            mineIcon.setImageDrawable(getDrawable(R.mipmap.ic_launcher));
+
             mineUsername.setText("点击登录");
             mineUsername.setClickable(true);
             mineUsername.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +151,9 @@ public class MineActivity extends AppCompatActivity {
             case R.id.mine_dynamic:
                 break;
             case R.id.mine_attention:
+                Intent intent = new Intent(MineActivity.this,AttentionActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.mine_fans:
                 break;
@@ -162,8 +167,8 @@ public class MineActivity extends AppCompatActivity {
             case R.id.feedback:
                 break;
             case R.id.setting:
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                Intent attentionIntent = new Intent(this, SettingActivity.class);
+                startActivity(attentionIntent);
                 break;
             case R.id.btn_camera:
                 toCamera();
@@ -233,7 +238,6 @@ public class MineActivity extends AppCompatActivity {
                         Glide.with(this).load(imageUri).into(mineIcon);
                         updateSharedPreferences();
                         updateService();
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

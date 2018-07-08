@@ -68,4 +68,6 @@ dependencies {
 
     //likebutton
     compile 'com.github.jd-alexander:LikeButton:0.2.3'
+
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 }

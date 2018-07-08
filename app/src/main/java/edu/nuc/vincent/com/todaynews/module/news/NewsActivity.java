@@ -1,6 +1,9 @@
 package edu.nuc.vincent.com.todaynews.module.news;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.like.LikeButton;
@@ -32,8 +36,14 @@ import edu.nuc.vincent.com.todaynews.GetDatas;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.adapter.CommentAdapter;
 import edu.nuc.vincent.com.todaynews.entity.Comment;
+import edu.nuc.vincent.com.todaynews.entity.Result;
 import edu.nuc.vincent.com.todaynews.entity.User;
+import edu.nuc.vincent.com.todaynews.module.mine.LoginActivity;
+import edu.nuc.vincent.com.todaynews.module.mine.MineActivity;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
+import edu.nuc.vincent.com.todaynews.utils.HttpHelper;
+import edu.nuc.vincent.com.todaynews.utils.L;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -83,7 +93,6 @@ public class NewsActivity extends AppCompatActivity {
     @InjectView(R.id.home_attention)
     Button homeAttention;
 
-
     private String mTitle;
 
     private String mDate;
@@ -100,7 +109,11 @@ public class NewsActivity extends AppCompatActivity {
 
     private String mId;
     private String mUid;
+    private int userId = 0;
 
+    private boolean loginState;
+
+    private boolean collectionState;
 
     private TextView mTitleView;
 
@@ -120,12 +133,16 @@ public class NewsActivity extends AppCompatActivity {
 
     private ImageView mSetLoveState;
 
-    private Retrofit mRetrofit;
+    private Retrofit mRetrofit, mRetrofitService;
 
-    private GetDatas mGetDatas;
+    private GetDatas mGetDatas, mGetDatasService;
 
     private List<Comment.DataBean> mComments;
     private CommentAdapter mCommentAdapter;
+
+    private String iconUrl;
+
+    private String uname;
 
     private static final int COMMENT_LENGTH = 10;
 
@@ -135,19 +152,31 @@ public class NewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.inject(this);
 
+        mRetrofitService = new HttpHelper.Builder().baseUrl(Constant.WEB_BASE_URL).build();
+
+        mGetDatasService = mRetrofitService.create(GetDatas.class);
+
         videoDoLike.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
 
+                Toast.makeText(NewsActivity.this, "收藏成功！", Toast.LENGTH_SHORT).show();
+
+                likeInsert();
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
 
+                Toast.makeText(NewsActivity.this, "取消收藏！", Toast.LENGTH_SHORT).show();
+                likeCancel();
+
             }
         });
 
         getIntentData();
+
+        videoDoLike.setLiked(collectionState);
 
         initView();
 
@@ -162,6 +191,136 @@ public class NewsActivity extends AppCompatActivity {
 
         getUserInfo();
         getComment();
+        getLoginState();
+        addHistory();
+    }
+
+    /**
+     * 取消收藏
+     */
+    private void likeCancel() {
+
+        if (loginState) {
+            Map<String, String> map = new HashMap<>();
+
+            map.put("userId", String.valueOf(userId));
+            map.put("id", mId);
+            mGetDatasService.deleteCollection(map).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (response.body().getMsg() != null) {
+                        Toasty.error(NewsActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT, true).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+
+                }
+            });
+
+        }
+
+
+    }
+
+    /**
+     * 收藏
+     */
+    private void likeInsert() {
+
+        if (loginState) {
+            Map<String, String> map = new HashMap<>();
+
+            map.put("userId", String.valueOf(userId));
+            map.put("id", mId);
+            map.put("uid", mUid);
+            map.put("content", mContent);
+            map.put("imageUrl", mImageUri);
+            map.put("model", "1");
+            map.put("videoUrl", "");
+            map.put("author", "");
+            map.put("skimCount", mSkimCount);
+            map.put("loveCount", mSetLoveCount);
+            map.put("title", mTitle);
+            map.put("commentCount", mCommentCount);
+            mGetDatasService.addCollectionToWeb(map).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (response.body().getMsg() != null) {
+                        Toasty.success(NewsActivity.this, response.body().getMsg(),
+                                Toast.LENGTH_SHORT, true).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Toasty.error(NewsActivity.this, "您还未登录",
+                    Toast.LENGTH_SHORT, true).show();
+        }
+
+    }
+
+    /**
+     * 获取登录状态
+     */
+    private void getLoginState() {
+        SharedPreferences getData = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        loginState = getData.getBoolean("loginState", false);
+        userId = getData.getInt("userId", 0);
+    }
+
+    /**
+     * 插入到服务器
+     */
+    private void addHistory() {
+
+
+        if (loginState) {
+
+            Map<String, String> map = new HashMap<>();
+
+            map.put("userId", String.valueOf(userId));
+            map.put("id", mId);
+            map.put("uid", mUid);
+            map.put("content", mContent);
+            map.put("imageUrl", mImageUri);
+            map.put("model", "1");
+            map.put("videoUrl", "");
+            map.put("author", "");
+            map.put("skimCount", mSkimCount);
+            map.put("loveCount", mSetLoveCount);
+            map.put("title", mTitle);
+            map.put("commentCount", mCommentCount);
+
+            mGetDatasService.addHistoryToWeb(map).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body().getCode().equals(Constant.ADD_HISTORY_SUCCESS_CODE)) {
+
+                            Toasty.success(NewsActivity.this, "历史添加成功",
+                                    Toast.LENGTH_SHORT, true).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Toasty.error(NewsActivity.this, "您还未登录",
+                    Toast.LENGTH_SHORT, true).show();
+        }
+
     }
 
     /**
@@ -180,6 +339,7 @@ public class NewsActivity extends AppCompatActivity {
         mSetLoveCount = intent.getStringExtra("set_love_count");
         mUid = intent.getStringExtra("uid");
         mId = intent.getStringExtra("id");
+        collectionState = intent.getBooleanExtra("collection_state", false);
 
     }
 
@@ -233,7 +393,6 @@ public class NewsActivity extends AppCompatActivity {
         homeCommentRecycle.setLayoutManager(layoutManager);
 
 
-
     }
 
     /**
@@ -241,20 +400,22 @@ public class NewsActivity extends AppCompatActivity {
      */
     private void getUserInfo() {
 
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
 
-        map.put("id",mUid);
-        map.put("pageToken","0");
+        map.put("id", mUid);
+        map.put("pageToken", "0");
         map.put("apikey", Constant.APIKEY);
 
         mGetDatas.getUserInfo(map).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
 
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
 
                     User.DataBean bean = (User.DataBean) response.body().getData().get(0);
 
+                    iconUrl = bean.getAvatarUrl();
+                    uname = bean.getScreenName();
                     homeUsername.setText(bean.getScreenName());
                     Glide.with(NewsActivity.this).load(bean.getAvatarUrl()).into(homeUserIcon);
 
@@ -276,20 +437,20 @@ public class NewsActivity extends AppCompatActivity {
      */
     private void getComment() {
 
-        Map<String,String> map = new HashMap<>();
-        map.put("id",mId);
-        map.put("pageToken","1");
-        map.put("apikey",Constant.APIKEY);
+        Map<String, String> map = new HashMap<>();
+        map.put("id", mId);
+        map.put("pageToken", "1");
+        map.put("apikey", Constant.APIKEY);
 
         mGetDatas.getComments(map).enqueue(new Callback<Comment>() {
             @Override
             public void onResponse(Call<Comment> call, Response<Comment> response) {
 
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
 
                     Comment comment = response.body();
 
-                    if (comment.getData()!=null) {
+                    if (comment.getData() != null) {
 
                         for (int i = 0; i < COMMENT_LENGTH; i++) {
 
@@ -301,7 +462,7 @@ public class NewsActivity extends AppCompatActivity {
                         }
                     }
 
-                    if (mComments.size()>0){
+                    if (mComments.size() > 0) {
 
 
                         homeHint.setVisibility(View.GONE);
@@ -334,12 +495,95 @@ public class NewsActivity extends AppCompatActivity {
     @OnClick(R.id.home_attention)
     public void onClick() {
 
-        attention();
+        if (loginState) {
+            String btn_content = homeAttention.getText().toString();
+
+            if (btn_content.equals("关注")) {
+                attention();
+                homeAttention.setText("已关注");
+                homeAttention.setTextColor(Color.BLACK);
+                homeAttention.setBackgroundColor(Color.WHITE);
+            } else {
+
+                cancelAttention();
+
+                homeAttention.setText("关注");
+                homeAttention.setTextColor(Color.WHITE);
+                homeAttention.setBackgroundColor(Color.parseColor("#f75959"));
+            }
+        }else {
+            Toasty.error(NewsActivity.this, "您还未登录", Toast.LENGTH_SHORT, true).show();
+        }
+
+    }
+
+    /**
+     * 取消关注
+     */
+    private void cancelAttention() {
+
+        if (loginState) {
+
+            Map<String, String> map = new HashMap<>();
+
+            map.put("userId", String.valueOf(userId));
+            map.put("uid", mUid);
+            mGetDatasService.deleteAttention(map).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (response.isSuccessful()) {
+
+                        Toasty.success(NewsActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT, true).show();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    Toasty.error(NewsActivity.this, "关注失败", Toast.LENGTH_SHORT, true).show();
+                }
+            });
+
+        } else {
+            Toasty.error(NewsActivity.this, "您还未登录", Toast.LENGTH_SHORT, true).show();
+        }
     }
 
     /**
      * 关注逻辑
      */
     private void attention() {
+
+        if (loginState) {
+
+            Map<String, String> map = new HashMap<>();
+
+            map.put("userId", String.valueOf(userId));
+            map.put("uid", mUid);
+            map.put("iconUrl",iconUrl);
+            map.put("uname", uname);
+            L.d("userId="+userId+",uid = "+mUid+",iconUrl = "+iconUrl+",uname = "+uname);
+            mGetDatasService.addAttentionToWeb(map).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (response.isSuccessful()) {
+
+                        Toasty.success(NewsActivity.this, response.body().getMsg(),
+                                Toast.LENGTH_SHORT, true).show();
+
+                    }
+                }
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    Toasty.error(NewsActivity.this, "关注失败",
+                            Toast.LENGTH_SHORT, true).show();
+                }
+            });
+
+        } else {
+            Toasty.error(NewsActivity.this, "您还未登录",
+                    Toast.LENGTH_SHORT, true).show();
+        }
+
     }
 }

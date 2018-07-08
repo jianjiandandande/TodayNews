@@ -197,6 +197,8 @@ public class SmallNewsFragment extends Fragment implements BaseAdapter.OnItemCli
         intent.putExtra("set_love_count","10");
         intent.putExtra("uid",uid);
         intent.putExtra("id",item.getId());
+        intent.putExtra("title","");
+        intent.putExtra("collection_state", false);
 
         startActivity(intent);
 

@@ -6,27 +6,33 @@ package edu.nuc.vincent.com.todaynews.entity;
 
 public class HistoryItem {
 
-    private String content;
-
-    private String imageUrl;
-
-    private String model;
-
-    private String uid;
-
     private String id;
-
+    private String uid;
+    private String content;
+    private String imageUrl;
+    private String model;
     private String videoUrl;
-
     private String author;
-
-    private String skim_count;
-
-    private String love_count;
-
+    private String skimCount;
+    private String loveCount;
     private String title;
-
     private String commentCount;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getContent() {
         return content;
@@ -52,22 +58,6 @@ public class HistoryItem {
         this.model = model;
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getVideoUrl() {
         return videoUrl;
     }
@@ -84,20 +74,20 @@ public class HistoryItem {
         this.author = author;
     }
 
-    public String getSkim_count() {
-        return skim_count;
+    public String getSkimCount() {
+        return skimCount;
     }
 
-    public void setSkim_count(String skim_count) {
-        this.skim_count = skim_count;
+    public void setSkimCount(String skimCount) {
+        this.skimCount = skimCount;
     }
 
-    public String getLove_count() {
-        return love_count;
+    public String getLoveCount() {
+        return loveCount;
     }
 
-    public void setLove_count(String love_count) {
-        this.love_count = love_count;
+    public void setLoveCount(String loveCount) {
+        this.loveCount = loveCount;
     }
 
     public String getTitle() {

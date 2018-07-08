@@ -22,9 +22,6 @@ import butterknife.OnClick;
 
 public class StartActivity extends AppCompatActivity {
 
-    @InjectView(R.id.btn_skip)
-    Button btnSkip;
-
     private boolean isFirstUse = true;
 
     private static final int MY_PERMISSION_REQUEST_CODE = 1;
@@ -82,12 +79,6 @@ public class StartActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    @OnClick(R.id.btn_skip)
-    public void onClick() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 
     /**

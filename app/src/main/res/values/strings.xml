@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TodayNews</string>
+    <string name="app_name">今日头条</string>
     <string name="title_home">主页</string>
 
     <string name="tab_home_movie">电影</string>

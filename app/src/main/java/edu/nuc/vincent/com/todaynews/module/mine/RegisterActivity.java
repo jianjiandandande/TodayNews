@@ -84,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         mRetrofit = new Retrofit.Builder()
                 .client(client)
-                .baseUrl("http://10.0.161.115:8080/")
+                .baseUrl(Constant.WEB_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mGetDatas = mRetrofit.create(GetDatas.class);
@@ -126,10 +126,12 @@ public class RegisterActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     Result result = response.body();
                     if (result.getCode().equals(Constant.REGISTER_SUCCESS_CODE)){
-                        Toasty.success(RegisterActivity.this,result.getMsg(),Toast.LENGTH_SHORT,true).show();
+                        Toasty.success(RegisterActivity.this,result.getMsg(),
+                                Toast.LENGTH_SHORT,true).show();
                         finish();
                     }else {
-                        Toasty.error(RegisterActivity.this,result.getMsg(),Toast.LENGTH_SHORT,true).show();
+                        Toasty.error(RegisterActivity.this,result.getMsg(),
+                                Toast.LENGTH_SHORT,true).show();
                     }
 
                 }

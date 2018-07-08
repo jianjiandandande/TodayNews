@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
 
-        /*editPassword.addTextChangedListener(new TextWatcher() {
+        editPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -76,10 +76,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if ((!editPassword.getText().toString().equals(""))&&(!editUsername.getText().toString().equals(""))){
-                   // btnLogin.setBackground(getDrawable(R.drawable.login_oval_border));
+                    btnLogin.setBackgroundColor(Color.parseColor("#f75959"));
                 }
             }
-        });*/
+        });
 
 
 
@@ -137,30 +137,31 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (result.getCode().equals(Constant.LOGIN_SUCCESS_CODE)){
 
-                        Toasty.success(LoginActivity.this,result.getMsg(),Toast.LENGTH_SHORT,true).show();
+                        Toasty.success(LoginActivity.this,result.getMsg(),
+                                Toast.LENGTH_SHORT,true).show();
                         dialog.setMessage("登陆成功");
 
                         dialog.dismiss();
-                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this,
+                                MainActivity.class);
                         intent.putExtra("username",username);
                         startActivity(intent);
                         finish();
 
                     }else {
 
-                        Toasty.error(LoginActivity.this,result.getMsg(),Toast.LENGTH_SHORT,true).show();
+                        Toasty.error(LoginActivity.this,result.getMsg(),
+                                Toast.LENGTH_SHORT,true).show();
                         dialog.setCancelable(true);
                         dialog.dismiss();
                     }
-
                 }
-
             }
-
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
 
-                Toasty.warning(LoginActivity.this,"网络状态异常",Toast.LENGTH_SHORT,true).show();
+                Toasty.warning(LoginActivity.this,"网络状态异常",
+                        Toast.LENGTH_SHORT,true).show();
             }
         });
 

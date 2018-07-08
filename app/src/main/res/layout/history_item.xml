@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:id="@+id/history_swipelayout">
+
+    <LinearLayout
+        android:background="#ff0000"
+        android:id="@+id/history_bottom_wrapper"
+        android:layout_width="120dp"
+        android:weightSum="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_delete"
+            android:scaleType="centerCrop"/>
+
+        <!--What you want to show-->
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/history_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/history_content"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:padding="10dp" />
+
+        <ImageView
+            android:id="@+id/history_image"
+            android:layout_width="90dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="15dp"
+            android:scaleType="centerCrop" />
+
+    </LinearLayout>
+
+</com.daimajia.swipe.SwipeLayout>

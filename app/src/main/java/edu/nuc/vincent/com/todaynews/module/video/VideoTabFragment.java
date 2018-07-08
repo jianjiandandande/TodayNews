@@ -223,6 +223,10 @@ public class VideoTabFragment extends Fragment implements BaseAdapter.OnItemClic
         intent.putExtra("love_count",String.valueOf(item.getLikeCount()));
         intent.putExtra("uid",item.getPosterId());
         intent.putExtra("id",item.getId());
+        intent.putExtra("imageUrl",item.getCoverUrl());
+        intent.putExtra("skim_count",String.valueOf(item.getViewCount()));
+        intent.putExtra("comment_count",String.valueOf(item.getCommentCount()));
+        intent.putExtra("collection_state", false);
         startActivity(intent);
 
     }

@@ -1,6 +1,8 @@
 package edu.nuc.vincent.com.todaynews.module.mine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -34,6 +36,7 @@ import edu.nuc.vincent.com.todaynews.module.smallnew.SmallActivity;
 import edu.nuc.vincent.com.todaynews.module.video.VideoActivity;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
 import edu.nuc.vincent.com.todaynews.utils.HttpHelper;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +66,7 @@ public class CollectionActivity extends AppCompatActivity implements BaseAdapter
         setContentView(R.layout.activity_collection);
         ButterKnife.inject(this);
 
+        initView();
         mRetrofit = new HttpHelper.Builder().baseUrl(Constant.WEB_BASE_URL).build();
         mGetDatas = mRetrofit.create(GetDatas.class);
 
@@ -83,7 +87,7 @@ public class CollectionActivity extends AppCompatActivity implements BaseAdapter
      */
     private void initView() {
 
-        mRefresh = (PullRefreshLayout) findViewById(R.id.home_refresh);
+        mRefresh = (PullRefreshLayout) findViewById(R.id.collection_refresh);
         mRefresh.setTTRefreshLayoutListener(new PullRefreshLayout.TTRefreshLayoutListener() {
             @Override
             public void onTTRefresh() {
@@ -92,7 +96,7 @@ public class CollectionActivity extends AppCompatActivity implements BaseAdapter
         });
 
 
-        mRecycleView = (RecyclerView) findViewById(R.id.history_recycle);
+        mRecycleView = (RecyclerView) findViewById(R.id.collection_recycle);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
@@ -111,45 +115,55 @@ public class CollectionActivity extends AppCompatActivity implements BaseAdapter
         mDialog = LoadingUtil.show(mDialog, this, LoadingUtil.TYPE_1);
         mDialog.setCancelable(false);
         mGetDatas = mRetrofit.create(GetDatas.class);
-        Map<String, String> map = new HashMap<>();
+        SharedPreferences getData = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        boolean loginState = getData.getBoolean("loginState", false);
+
+        int userId = 0;
+
+        if (loginState == true) {
+
+            userId = getData.getInt("userId", 0);
 
 
-        mGetDatas.getNewsFromService(map).enqueue(new Callback<News>() {
-            @Override
-            public void onResponse(Call<News> call, final Response<News> response) {
+            Map<String, String> map = new HashMap<>();
+            map.put("userId", String.valueOf(userId));
+
+            mGetDatas.queryCollection(map).enqueue(new Callback<List<HistoryItem>>() {
+                @Override
+                public void onResponse(Call<List<HistoryItem>> call, final Response<List<HistoryItem>> response) {
 
 
-                if (response.isSuccessful()) {
+                    if (response.isSuccessful()) {
 
-                    News news = response.body();
+                        if (response.body() == null) {
 
-                    if (news.getData() == null) {
+                            Toast.makeText(CollectionActivity.this, "刷新数据太快", Toast.LENGTH_SHORT).show();
+                        } else {
 
-                        Toast.makeText(CollectionActivity.this, "刷新数据太快", Toast.LENGTH_SHORT).show();
+                            mDatas.clear();
+                            mDatas = response.body();
+
+                            mRefresh.endRefresh();
+                            initAdapter();
+                            mDialog.dismiss();
+                        }
+
+
                     } else {
 
-                        mDatas.clear();
-                        //mDatas = news.getData();
-
-                        mRefresh.endRefresh();
-                        initAdapter();
-                        mDialog.dismiss();
                     }
-
-
-                } else {
 
                 }
 
-
-            }
-
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-
-
-            }
-        });
+                @Override
+                public void onFailure(Call<List<HistoryItem>> call, Throwable t) {
+                    Toasty.error(CollectionActivity.this, "获取历史失败", Toast.LENGTH_SHORT, true);
+                }
+            });
+        } else {
+            mDialog.dismiss();
+            Toasty.error(CollectionActivity.this, "您还未登录", Toast.LENGTH_SHORT, true);
+        }
 
     }
 
@@ -159,7 +173,7 @@ public class CollectionActivity extends AppCompatActivity implements BaseAdapter
     private void initAdapter() {
 
 
-        mAdapter = new HistoryAdapter(CollectionActivity.this, mDatas, R.layout.search_item);
+        mAdapter = new HistoryAdapter(CollectionActivity.this, mDatas, R.layout.history_item);
 
         mAdapter.setOnItemClickListener(this);
         mRecycleView.setAdapter(mAdapter);
@@ -170,37 +184,41 @@ public class CollectionActivity extends AppCompatActivity implements BaseAdapter
 
         HistoryItem item= mDatas.get(position);
         Intent intent = null;
-        if (item.getModel().equals("News")){
+        if (item.getModel().equals("1")){
 
             intent = new Intent(this, NewsActivity.class);
             intent.putExtra("title", item.getTitle());
-            intent.putExtra("date", String.valueOf(item.getAuthor()));
+            intent.putExtra("date", item.getAuthor());
             intent.putExtra("content", item.getContent());
             intent.putExtra("image_uri", item.getImageUrl() == null ?
                     "https://p3.pstatp.com/large/pgc-image/15275844527347c09907875" : item.getImageUrl());
-            intent.putExtra("skim_count", String.valueOf(item.getSkim_count()));
-            intent.putExtra("comment_count", String.valueOf(item.getCommentCount()));
-            intent.putExtra("set_love_count", String.valueOf(item.getLove_count()));
-            intent.putExtra("uid", String.valueOf(item.getUid()));
+            intent.putExtra("skim_count", item.getSkimCount());
+            intent.putExtra("comment_count", item.getCommentCount());
+            intent.putExtra("set_love_count", item.getLoveCount());
+            intent.putExtra("uid", item.getUid());
             intent.putExtra("id", item.getId());
+            intent.putExtra("collection_state", true);
 
-        }else if (item.getModel().equals("Video")){
+
+        }else if (item.getModel().equals("2")){
             intent = new Intent(this, VideoActivity.class);
             intent.putExtra("video_uri",item.getVideoUrl());
             intent.putExtra("title",item.getTitle());
-            intent.putExtra("love_count",String.valueOf(item.getLove_count()));
+            intent.putExtra("love_count",item.getLoveCount());
             intent.putExtra("uid",item.getUid());
             intent.putExtra("id",item.getId());
+            intent.putExtra("collection_state", true);
 
-        }else if(item.getModel().equals("Small")){
+        }else if(item.getModel().equals("3")){
             intent = new Intent(this, SmallActivity.class);
             intent.putExtra("date",item.getAuthor());
             intent.putExtra("content",item.getContent());
-            intent.putExtra("skim_count",String.valueOf(item.getSkim_count()));
-            intent.putExtra("comment_count",String.valueOf(item.getCommentCount()));
+            intent.putExtra("skim_count",item.getSkimCount());
+            intent.putExtra("comment_count",item.getCommentCount());
             intent.putExtra("set_love_count","10");
             intent.putExtra("uid","央视新闻");
             intent.putExtra("id",item.getId());
+            intent.putExtra("collection_state", true);
         }
 
         startActivity(intent);

@@ -1,6 +1,8 @@
 package edu.nuc.vincent.com.todaynews.module.smallnew;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.like.LikeButton;
@@ -34,8 +37,14 @@ import edu.nuc.vincent.com.todaynews.GetDatas;
 import edu.nuc.vincent.com.todaynews.R;
 import edu.nuc.vincent.com.todaynews.adapter.CommentAdapter;
 import edu.nuc.vincent.com.todaynews.entity.Comment;
+import edu.nuc.vincent.com.todaynews.entity.Result;
 import edu.nuc.vincent.com.todaynews.entity.User;
+import edu.nuc.vincent.com.todaynews.module.news.NewsActivity;
+import edu.nuc.vincent.com.todaynews.module.video.VideoActivity;
 import edu.nuc.vincent.com.todaynews.utils.Constant;
+import edu.nuc.vincent.com.todaynews.utils.HttpHelper;
+import edu.nuc.vincent.com.todaynews.utils.L;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -93,11 +102,23 @@ public class SmallActivity extends AppCompatActivity {
     private String mUid;
     private String mId;
 
-    private Retrofit mRetrofit;
-    private GetDatas mGetDatas;
+    private int userId = 0;
+
+    private boolean loginState;
+    private boolean collectionState;
+
+    private String mTitle;
+
+    private Retrofit mRetrofit,mRetrofitService;
+
+    private GetDatas mGetDatas,mGetDatasService;
 
     private List<Comment.DataBean> mComments;
     private CommentAdapter mCommentAdapter;
+
+    private String iconUrl;
+
+    private String uname;
 
     private static final int COMMENT_LENGTH = 10;
 
@@ -107,22 +128,26 @@ public class SmallActivity extends AppCompatActivity {
         setContentView(R.layout.activity_small);
         ButterKnife.inject(this);
 
+        mRetrofitService = new HttpHelper.Builder().baseUrl(Constant.WEB_BASE_URL).build();
+
+        mGetDatasService = mRetrofitService.create(GetDatas.class);
+
         videoCommentEdit.setInputType(InputType.TYPE_NULL);
 
         videoDoLike.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
-
+                likeInsert();
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
-
+                likeCancel();
             }
         });
 
         getIntentData();
-
+        videoDoLike.setLiked(collectionState);
         setDatas();
 
         mRetrofit = new Retrofit.Builder()
@@ -136,6 +161,138 @@ public class SmallActivity extends AppCompatActivity {
         initView();
         getUserInfo();
         getComment();
+
+        getLoginState();
+        insertSerVice();
+
+
+    }
+
+    /**
+     * 取消收藏
+     */
+    private void likeCancel() {
+
+        if (loginState) {
+            Map<String, String> map = new HashMap<>();
+
+            map.put("userId", String.valueOf(userId));
+            map.put("id", mId);
+            mGetDatasService.deleteCollection(map).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    Toasty.error(SmallActivity.this,response.body().getMsg(),Toast.LENGTH_SHORT,true).show();
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+
+                }
+            });
+
+        }
+
+
+    }
+
+    /**
+     * 收藏
+     */
+    private void likeInsert() {
+
+        if (loginState){
+            Map<String, String> map = new HashMap<>();
+
+            map.put("userId", String.valueOf(userId));
+            map.put("id",mId);
+            map.put("uid",mUid);
+            map.put("content",mContent);
+            map.put("imageUrl"," ");
+            map.put("model","3");
+            map.put("videoUrl"," ");
+            map.put("author",mUsername);
+            map.put("skimCount",mSkimCount);
+            map.put("loveCount",mSetLoveCount);
+            map.put("title",mTitle);
+            map.put("commentCount",mCommentCount);
+            mGetDatasService.addCollectionToWeb(map).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    Toasty.success(SmallActivity.this,response.body().getMsg(),Toast.LENGTH_SHORT,true).show();
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+
+                }
+            });
+
+        }else {
+            Toasty.error(SmallActivity.this,"您还未登录",Toast.LENGTH_SHORT,true).show();
+        }
+
+    }
+
+    /**
+     * 获取登录状态
+     */
+    private void getLoginState(){
+        SharedPreferences getData = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        loginState = getData.getBoolean("loginState", false);
+        userId = getData.getInt("userId",0);
+    }
+
+
+    /**
+     * 插入到服务器
+     */
+    private void insertSerVice() {
+
+        SharedPreferences getData = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        boolean loginState = getData.getBoolean("loginState", false);
+
+        int userId = 0;
+
+        if (loginState == true) {
+
+            userId = getData.getInt("userId",0);
+
+        }
+
+
+
+
+        Map<String,String> map = new HashMap<>();
+
+        map.put("userId",String.valueOf(userId));
+        map.put("id",mId);
+        map.put("uid",mUid);
+        map.put("content",mContent);
+        map.put("imageUrl"," ");
+        map.put("model","3");
+        map.put("videoUrl"," ");
+        map.put("author",mUsername);
+        map.put("skimCount",mSkimCount);
+        map.put("loveCount",mSetLoveCount);
+        map.put("title",mTitle);
+        map.put("commentCount",mCommentCount);
+
+        mGetDatasService.addHistoryToWeb(map).enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                if (response.isSuccessful()){
+                    if (response.body().getCode().equals(Constant.ADD_HISTORY_SUCCESS_CODE)){
+
+                        Toasty.success(SmallActivity.this,"历史添加成功", Toast.LENGTH_SHORT,true).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+
+            }
+        });
 
     }
 
@@ -167,7 +324,8 @@ public class SmallActivity extends AppCompatActivity {
         mSetLoveCount = intent.getStringExtra("set_love_count");
         mUid = intent.getStringExtra("uid");
         mId = intent.getStringExtra("id");
-
+        mTitle = intent.getStringExtra("title");
+        collectionState = intent.getBooleanExtra("collection_state",false);
     }
 
     /**
@@ -191,12 +349,25 @@ public class SmallActivity extends AppCompatActivity {
 
                 break;
             case R.id.small_attention:
+                if (loginState) {
+                    String btn_content = smallAttention.getText().toString();
 
-                attention();
-                Button btn_attention = (Button) findViewById(R.id.small_attention);
-                btn_attention.setBackgroundColor(Color.parseColor("#ffffff"));
-                btn_attention.setText("已关注");
-                btn_attention.setTextColor(Color.BLACK);
+                    if (btn_content.equals("关注")) {
+                        attention();
+                        smallAttention.setText("已关注");
+                        smallAttention.setTextColor(Color.BLACK);
+                        smallAttention.setBackgroundColor(Color.WHITE);
+                    } else {
+
+                        cancelAttention();
+
+                        smallAttention.setText("关注");
+                        smallAttention.setTextColor(Color.WHITE);
+                        smallAttention.setBackgroundColor(Color.parseColor("#f75959"));
+                    }
+                }else {
+                    Toasty.error(SmallActivity.this, "您还未登录", Toast.LENGTH_SHORT, true).show();
+                }
 
                 break;
             case R.id.small_set_love:
@@ -206,11 +377,6 @@ public class SmallActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 关注逻辑
-     */
-    private void attention() {
-    }
 
     private void getUserInfo() {
 
@@ -228,6 +394,8 @@ public class SmallActivity extends AppCompatActivity {
 
                     User.DataBean bean = (User.DataBean) response.body().getData().get(0);
 
+                    iconUrl = bean.getAvatarUrl();
+                    uname = bean.getScreenName();
                     smallUsername.setText(bean.getScreenName());
                     Glide.with(SmallActivity.this).load(bean.getAvatarUrl()).into(smallUserIcon);
 
@@ -283,6 +451,8 @@ public class SmallActivity extends AppCompatActivity {
         });
     }
 
+
+
     /**
      * 初始化Adapter
      */
@@ -292,6 +462,73 @@ public class SmallActivity extends AppCompatActivity {
         mCommentAdapter = new CommentAdapter(this, mComments, R.layout.comment_item);
 
         smallCommentRecycle.setAdapter(mCommentAdapter);
+
+    }
+
+    /**
+     * 取消关注
+     */
+    private void cancelAttention() {
+
+        if (loginState) {
+
+            Map<String, String> map = new HashMap<>();
+
+            map.put("userId", String.valueOf(userId));
+            map.put("uid", mUid);
+            mGetDatasService.deleteAttention(map).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (response.isSuccessful()) {
+
+                        Toasty.success(SmallActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT, true).show();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    Toasty.error(SmallActivity.this, "关注失败", Toast.LENGTH_SHORT, true).show();
+                }
+            });
+
+        } else {
+            Toasty.error(SmallActivity.this, "您还未登录", Toast.LENGTH_SHORT, true).show();
+        }
+    }
+
+    /**
+     * 关注逻辑
+     */
+    private void attention() {
+
+        if (loginState) {
+
+            Map<String, String> map = new HashMap<>();
+
+            map.put("userId", String.valueOf(userId));
+            map.put("uid", mUid);
+            map.put("iconUrl",iconUrl);
+            map.put("uname", uname);
+            L.d("userId="+userId+",uid = "+mUid+",iconUrl = "+iconUrl+",uname = "+uname);
+            mGetDatasService.addAttentionToWeb(map).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    if (response.isSuccessful()) {
+
+                        Toasty.success(SmallActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT, true).show();
+
+                    }
+                }
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    Toasty.error(SmallActivity.this, "关注失败", Toast.LENGTH_SHORT, true).show();
+                }
+            });
+
+        } else {
+            Toasty.error(SmallActivity.this, "您还未登录", Toast.LENGTH_SHORT, true).show();
+        }
 
     }
 
